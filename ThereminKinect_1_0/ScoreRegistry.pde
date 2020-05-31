@@ -17,7 +17,7 @@ public class ScoreRegistry implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-      ScoreRegistry sr = (ThereminKinect_0_3.ScoreRegistry)o;
+      ScoreRegistry sr = (ScoreRegistry)o;
       
       if(this.score > sr.getScore()){
         return 1;
