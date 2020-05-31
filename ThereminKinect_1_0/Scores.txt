@@ -1,6 +1,9 @@
-Player2:317.5
-Player1:250.75
-Player2:135.75
-Player1:144.5
-Player1:152.5
+Player1:276.75
+Player1:297.25
 Player1:294.0
+Player1:152.5
+Player1:144.5
+Player2:135.75
+Player1:250.75
+Player2:317.5
+Player2:0.0

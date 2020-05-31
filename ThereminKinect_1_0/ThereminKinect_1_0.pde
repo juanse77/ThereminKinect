@@ -1,11 +1,13 @@
-import kinect4WinSDK.Kinect;
-import kinect4WinSDK.SkeletonData;
 import arb.soundcipher.*;
 import processing.sound.*;
+import kinect4WinSDK.Kinect;
+import kinect4WinSDK.SkeletonData;
 
 //import gifAnimation.*;
-
 //GifMaker ficherogif;
+
+Kinect kinect;
+ArrayList <SkeletonData> bodies;
 
 PrintWriter output;
 
@@ -16,9 +18,6 @@ int numPlayer = 0;
 
 Point rightHand;
 Point leftHand;
-
-Kinect kinect;
-ArrayList <SkeletonData> bodies;
 
 String catalogue [] = {"sweet_dreams", "over_the_rainbow"};
 int musicIndex = 0; 
@@ -98,8 +97,12 @@ void draw()
       
     case Mode.GAME_WITHOUT_HELP:
       strMode = "Game without help";
-        
+ 
       game.drawMarks();
+      game.addPartiaScore();
+  
+      score = String.valueOf(game.getScore());
+      
       tm.makeSound(leftHand, rightHand);
       
       break;
@@ -120,6 +123,99 @@ void draw()
     
   //ficherogif.addFrame();
 }
+
+void keyPressed(){
+  
+  if(key == 'a' || key == 'A'){
+        
+    if(game.isRunning()){
+      game.stop_music();
+    }
+    
+    game.runAutomaticMode();
+    
+  }
+  
+  if(key == 'h' || key == 'H'){
+    
+    if(game.isRunning()){
+      game.stop_music();
+    }
+    
+    numPlayer++;
+    game.runGameWithHelpMode("Player" + numPlayer);
+  }
+  
+  if(key == 'o' || key == 'O'){
+    
+    if(game.isRunning()){
+      game.stop_music();
+    }
+
+    numPlayer++;
+    game.runGameWithoutHelpMode("Player" + numPlayer);
+    
+  }
+
+  
+  if(key == 'f' || key == 'F'){
+        
+    if(game.isRunning()){
+      game.stop_music();
+    }
+    
+    game.runFree();
+    
+  }
+  
+  if(key == 's' || key == 'S'){
+    
+    if(game.isRunning()){
+      game.stop_music();
+    }
+    
+  }
+    
+  if(key == 'c' || key == 'C'){
+    
+    if(!game.isRunning()){
+      musicIndex++;
+      
+      if(musicIndex > catalogue.length -1){
+        musicIndex = 0;
+      }
+      
+      game.setMusicFileName(catalogue[musicIndex]);
+    }
+  }  
+  
+}
+
+void exit(){
+  output = createWriter("Scores.txt");
+  ArrayList<ScoreRegistry> scoreTable = game.getScoreTable();
+  
+  for(int i = 0; i < scoreTable.size(); i++){
+    ScoreRegistry sr = scoreTable.get(i);
+    output.println(sr.getName() + ":" + sr.getScore());
+  }
+  
+  output.flush();
+  output.close();
+  
+  super.exit();
+}
+
+// Threads
+void executeBase(){
+  game.executeBase();
+}
+
+void executeMelody(){
+  game.executeMelody();
+}
+
+//Kinect methods
 
 void detectBody(){
   
@@ -293,95 +389,4 @@ void moveEvent(SkeletonData _b, SkeletonData _a)
       }
     }
   }
-}
-
-void exit(){
-  output = createWriter("Scores.txt");
-  ArrayList<ScoreRegistry> scoreTable = game.getScoreTable();
-  
-  for(int i = 0; i < scoreTable.size(); i++){
-    ScoreRegistry sr = scoreTable.get(i);
-    output.println(sr.getName() + ":" + sr.getScore());
-  }
-  
-  output.flush();
-  output.close();
-  
-  super.exit();
-}
-
-void keyPressed(){
-  
-  if(key == 'a' || key == 'A'){
-        
-    if(game.isRunning()){
-      game.stop_music();
-    }
-    
-    game.runAutomaticMode();
-    
-  }
-  
-  if(key == 'h' || key == 'H'){
-    
-    if(game.isRunning()){
-      game.stop_music();
-    }
-    
-    numPlayer++;
-    game.runGameWithHelpMode("Player" + numPlayer);
-  }
-  
-  if(key == 'o' || key == 'O'){
-    
-    if(game.isRunning()){
-      game.stop_music();
-    }
-
-    numPlayer++;
-    game.runGameWithoutHelpMode("Player" + numPlayer);
-    
-  }
-
-  
-  if(key == 'f' || key == 'F'){
-        
-    if(game.isRunning()){
-      game.stop_music();
-    }
-    
-    game.runFree();
-    
-  }
-  
-  if(key == 's' || key == 'S'){
-    
-    if(game.isRunning()){
-      game.stop_music();
-    }
-    
-  }
-    
-  if(key == 'c' || key == 'C'){
-    
-    if(!game.isRunning()){
-      musicIndex++;
-      
-      if(musicIndex > catalogue.length -1){
-        musicIndex = 0;
-      }
-      
-      game.setMusicFileName(catalogue[musicIndex]);
-    }
-  }  
-  
-}
-
-// Threads
-void executeBase(){
-  game.executeBase();
-}
-
-void executeMelody(){
-  game.executeMelody();
 }
