@@ -64,6 +64,7 @@ class GameScore{
   
   public void addScoreTable(String name){
     scoreTable.add(new ScoreRegistry(name, score));
+    Collections.sort(scoreTable);
     Collections.reverse(scoreTable);
   }
   
