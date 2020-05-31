@@ -8,27 +8,31 @@ class GameScore{
   
   public GameScore(Theremin tm){
     this.tm = tm;
-    scoreTable = new ArrayList<ScoreRegistry>();
+    this.scoreTable = new ArrayList<ScoreRegistry>();
+    this.score = 0.f;
+    
     readScoresFile(); 
   }
-  
+    
   private void readScoresFile(){
-    String[] lines = loadStrings("Scores.txt");
+    File f = dataFile("scores.json");
     
-    if(lines == null) return;
+    print(f.isFile());
+    if(f.isFile()){
     
-    println("there are " + lines.length + " lines");
-    
-    for (int i = 0 ; i < lines.length; i++) {
-      String registry[] = split(lines[i], ':');
+      JSONArray values = loadJSONArray("data/scores.json");
       
-      if(registry.length != 2){
-        print("Loading scores error.");
-        exit();
+      for (int i = 0; i < values.size(); i++) {  
+        JSONObject reg = values.getJSONObject(i); 
+    
+        String name = reg.getString("name");
+        float score = reg.getFloat("score");
+    
+        scoreTable.add(new ScoreRegistry(name, score));
       }
       
-      scoreTable.add(new ScoreRegistry(registry[0], Float.parseFloat(registry[1])));
     }
+    
   }
   
   public void startMeasuring(){

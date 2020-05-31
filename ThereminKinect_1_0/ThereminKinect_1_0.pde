@@ -56,8 +56,6 @@ void draw()
   image(kinect.GetImage(), 0, 0);
   tm.drawTheremin();
   
-  detectBody();
-  
   String score = "0.0";
   
   switch(game.getMode()){
@@ -85,6 +83,7 @@ void draw()
       
     case Mode.GAME_WITH_HELP:
       strMode = "Game with help";
+      detectBody();
       
       game.drawMarks();
       game.addPartiaScore();
@@ -97,7 +96,8 @@ void draw()
       
     case Mode.GAME_WITHOUT_HELP:
       strMode = "Game without help";
- 
+      detectBody();
+       
       game.drawMarks();
       game.addPartiaScore();
   
@@ -192,18 +192,21 @@ void keyPressed(){
 }
 
 void exit(){
-  output = createWriter("Scores.txt");
+  JSONArray values = new JSONArray();
   ArrayList<ScoreRegistry> scoreTable = game.getScoreTable();
+
+  for (int i = 0; i < scoreTable.size(); i++) {
   
-  for(int i = 0; i < scoreTable.size(); i++){
+    JSONObject reg = new JSONObject();
     ScoreRegistry sr = scoreTable.get(i);
-    output.println(sr.getName() + ":" + sr.getScore());
+    
+    reg.setString("name", sr.getName());
+    reg.setFloat("score", sr.getScore());
+    
+    values.setJSONObject(i, reg);
   }
   
-  output.flush();
-  output.close();
-  
-  super.exit();
+  saveJSONArray(values, "data/scores.json"); 
 }
 
 // Threads

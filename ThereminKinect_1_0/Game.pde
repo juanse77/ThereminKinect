@@ -21,6 +21,9 @@ class Game implements IMusic{
   
   public void runAutomaticMode(){
     this.mode = Mode.AUTOMATIC;
+    
+    gs.startMeasuring();
+    
     music = new Music(applet, 92, mode, musicFileName);
     music.start_music(mode);
   }
@@ -38,8 +41,8 @@ class Game implements IMusic{
   public void runGameWithoutHelpMode(String name){
     this.name = name;
     this.mode = Mode.GAME_WITHOUT_HELP;
-
-    gs.startMeasuring();    
+    
+    gs.startMeasuring();
     
     music = new Music(applet, 92, mode, musicFileName);
     music.start_music(mode);
@@ -47,6 +50,7 @@ class Game implements IMusic{
   
   public void runFree(){
     this.mode = Mode.FREE;
+    gs.startMeasuring();
   }
   
   public void drawMarks(){
