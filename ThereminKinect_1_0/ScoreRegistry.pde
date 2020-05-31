@@ -1,4 +1,4 @@
-public class ScoreRegistry implements Comparable{
+public class ScoreRegistry implements Comparable<ScoreRegistry>{
     private final String name;
     private final float score;
     
@@ -16,8 +16,7 @@ public class ScoreRegistry implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-      ScoreRegistry sr = (ScoreRegistry)o;
+    public int compareTo(ScoreRegistry sr) {
       
       if(this.score > sr.getScore()){
         return 1;

@@ -22,7 +22,7 @@ class GameScore{
     for (int i = 0 ; i < lines.length; i++) {
       String registry[] = split(lines[i], ':');
       
-      if(registry.length < 2){
+      if(registry.length != 2){
         print("Loading scores error.");
         exit();
       }
