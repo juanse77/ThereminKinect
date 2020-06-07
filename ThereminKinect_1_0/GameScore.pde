@@ -6,12 +6,25 @@ class GameScore{
   private float score;
   private final ArrayList<ScoreRegistry> scoreTable;
   
-  public GameScore(Theremin tm){
+  private final ScoreTable scoreTableView;
+  
+  private final PApplet applet;
+  
+  public GameScore(PApplet applet, Theremin tm, ScoreTable st){
+    this.applet = applet;
+    
     this.tm = tm;
     this.scoreTable = new ArrayList<ScoreRegistry>();
     this.score = 0.f;
     
-    readScoresFile(); 
+    readScoresFile();
+    
+    this.scoreTableView = st;
+    Map<ScoreRegistry, PImage> items = new HashMap<ScoreRegistry, PImage>(); 
+    for(ScoreRegistry sr: scoreTable) {
+      items.put(sr, AvatarIterator.getInstance(this.applet).getAvatar(sr.getPlayer()));
+    }
+    this.scoreTableView.setItems(items);
   }
     
   private void readScoresFile(){
@@ -24,11 +37,12 @@ class GameScore{
       
       for (int i = 0; i < values.size(); i++) {  
         JSONObject reg = values.getJSONObject(i); 
-    
+      
+        int player = reg.getInt("player");
         String name = reg.getString("name");
         float score = reg.getFloat("score");
     
-        scoreTable.add(new ScoreRegistry(name, score));
+        scoreTable.add(new ScoreRegistry(player, name, score));
       }
       
     }
@@ -66,10 +80,13 @@ class GameScore{
     return score;
   }
   
-  public void addScoreTable(String name){
-    scoreTable.add(new ScoreRegistry(name, score));
+  public void addScoreTable(int player, String name){
+    ScoreRegistry sr = new ScoreRegistry(player, name, score);
+    scoreTable.add(sr);
     Collections.sort(scoreTable);
     Collections.reverse(scoreTable);
+    
+    scoreTableView.addItem(sr, AvatarIterator.getInstance(applet).getAvatar(player));
   }
   
   public ArrayList<ScoreRegistry> getScoreTable(){

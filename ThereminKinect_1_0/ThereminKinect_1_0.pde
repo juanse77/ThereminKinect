@@ -23,10 +23,18 @@ String catalogue [] = {"sweet_dreams", "over_the_rainbow"};
 int musicIndex = 0; 
  
 String strMode; 
+
+ControlP5 cp5;
+
+ScoreTable scoreTableView;
+
+float timeToScore = 0.0;
+boolean endGame = false;
  
 void setup()
 {
-  size(640, 480);
+  cp5 = new ControlP5(this);
+  size(640, 480, P3D);
   frameRate(30);
   
   background(0);
@@ -40,8 +48,17 @@ void setup()
   kinect = new Kinect(this);
   bodies = new ArrayList<SkeletonData>();
   
-  tm = new Theremin(new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
-  game = new Game(this, tm, catalogue[musicIndex]);
+  scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80),
+                         new PVector(width/2 - 100, 20),
+                         "tabla_resultados");
+  
+  tm = new Theremin(this, new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
+  game = new Game(this, tm, scoreTableView, catalogue[musicIndex]);
+  
+  //ArrayList<ScoreRegistry> init_list = new ArrayList<ScoreRegistry>();
+  //ArrayList<PImage> avatares = new ArrayList<PImage>();
+  
+  
 }
  
 void draw()
@@ -57,6 +74,7 @@ void draw()
   tm.drawTheremin();
   
   String score = "0.0";
+  
   
   switch(game.getMode()){
      
@@ -85,8 +103,13 @@ void draw()
       strMode = "Game with help";
       detectBody();
       
-      game.drawMarks();
+      endGame = game.drawMarks();
       game.addPartiaScore();
+      
+      if(endGame) {
+        timeToScore = millis();
+        println("end game");
+      }
   
       score = String.valueOf(game.getScore());
       
@@ -98,8 +121,13 @@ void draw()
       strMode = "Game without help";
       detectBody();
        
-      game.drawMarks();
+      endGame = game.drawMarks();
       game.addPartiaScore();
+      
+      if(endGame) {
+        timeToScore = millis();
+        
+      }
   
       score = String.valueOf(game.getScore());
       
@@ -120,6 +148,15 @@ void draw()
   text(musicName, 10, 55);
   
   text("Score: " + score, width/2, 30);
+  println(endGame);
+  if(endGame && (millis() - timeToScore) < 10000.0) {
+    textSize(20);
+    fill(255,0,0);
+    text("shader con puntuacion" + game.getScore(), width/2, height/2);
+    println("end game");
+  } else {
+    endGame = false;
+  }
     
   //ficherogif.addFrame();
 }
@@ -143,7 +180,7 @@ void keyPressed(){
     }
     
     numPlayer++;
-    game.runGameWithHelpMode("Player" + numPlayer);
+    game.runGameWithHelpMode(numPlayer, "Player " + numPlayer);
   }
   
   if(key == 'o' || key == 'O'){
@@ -153,7 +190,7 @@ void keyPressed(){
     }
 
     numPlayer++;
-    game.runGameWithoutHelpMode("Player" + numPlayer);
+    game.runGameWithoutHelpMode(numPlayer, "Player " + numPlayer);
     
   }
 
@@ -189,6 +226,19 @@ void keyPressed(){
     }
   }  
   
+  if(key == 't' || key == 'T') {
+    scoreTableView.toggleView();
+  }
+  
+  if(key == 'q' || key == 'Q') {
+    if(game.isRunning()){
+      game.stop_music();
+    }
+    
+    exit();
+    System.exit(0);
+  }
+  
 }
 
 void exit(){
@@ -201,6 +251,7 @@ void exit(){
     ScoreRegistry sr = scoreTable.get(i);
     
     reg.setString("name", sr.getName());
+    reg.setInt("player", sr.getPlayer());
     reg.setFloat("score", sr.getScore());
     
     values.setJSONObject(i, reg);
