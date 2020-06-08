@@ -55,7 +55,6 @@ deviceIterator:
         break deviceIterator;
       } 
       catch (UnsatisfiedLinkError e) {
-        System.err.println(e);
         continue deviceIterator;
       }
     case LEAP_MOTION:
@@ -64,7 +63,6 @@ deviceIterator:
         currentDevice = Device.KINECT;
         break deviceIterator;
       } else {
-        System.err.println("Leap Motion device not detected!");
         continue deviceIterator;
       }
     default:
@@ -110,7 +108,8 @@ void draw()
 
     case Mode.FREE:
       strMode = "Free";
-
+      
+      deviceDetection();
       tm.makeSound(leftHand, rightHand);
 
       break;
@@ -157,6 +156,8 @@ void draw()
 
     //ficherogif.addFrame();
   } else {
+    textSize(20);
+    fill(255, 0, 0);
     text("Not compatible device connected", width/4, height/2);
   }
 }
