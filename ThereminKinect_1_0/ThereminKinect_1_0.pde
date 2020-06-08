@@ -30,6 +30,8 @@ ScoreTable scoreTableView;
 
 float timeToScore = 0.0;
 boolean endGame = false;
+
+GameOverPanel gop;
  
 void setup()
 {
@@ -55,9 +57,7 @@ void setup()
   tm = new Theremin(this, new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
   game = new Game(this, tm, scoreTableView, catalogue[musicIndex]);
   
-  //ArrayList<ScoreRegistry> init_list = new ArrayList<ScoreRegistry>();
-  //ArrayList<PImage> avatares = new ArrayList<PImage>();
-  
+  gop = new GameOverPanel(this);
   
 }
  
@@ -106,10 +106,7 @@ void draw()
       endGame = game.drawMarks();
       game.addPartiaScore();
       
-      if(endGame) {
-        timeToScore = millis();
-        println("end game");
-      }
+      if(endGame) timeToScore = millis();
   
       score = String.valueOf(game.getScore());
       
@@ -124,11 +121,8 @@ void draw()
       endGame = game.drawMarks();
       game.addPartiaScore();
       
-      if(endGame) {
-        timeToScore = millis();
-        
-      }
-  
+      if(endGame) timeToScore = millis();
+      
       score = String.valueOf(game.getScore());
       
       tm.makeSound(leftHand, rightHand);
@@ -148,13 +142,11 @@ void draw()
   text(musicName, 10, 55);
   
   text("Score: " + score, width/2, 30);
-  println(endGame);
-  if(endGame && (millis() - timeToScore) < 10000.0) {
-    textSize(20);
-    fill(255,0,0);
-    text("shader con puntuacion" + game.getScore(), width/2, height/2);
-    println("end game");
-  } else {
+  
+  if(endGame && (millis() - timeToScore) < 4000.0) {
+    gop.show(kinect.GetImage(), game.getScore());
+  } else if(endGame) {
+    background(0);
     endGame = false;
   }
     
@@ -191,7 +183,6 @@ void keyPressed(){
 
     numPlayer++;
     game.runGameWithoutHelpMode(numPlayer, "Player " + numPlayer);
-    
   }
 
   
@@ -221,7 +212,6 @@ void keyPressed(){
       if(musicIndex > catalogue.length -1){
         musicIndex = 0;
       }
-      
       game.setMusicFileName(catalogue[musicIndex]);
     }
   }  
