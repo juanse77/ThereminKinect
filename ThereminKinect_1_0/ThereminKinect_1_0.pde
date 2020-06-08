@@ -77,12 +77,14 @@ deviceIterator:
       currentDevice = Device.NONE;
     }
   }
-
-  tm = new Theremin(new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
-  game = new Game(this, tm, catalogue[musicIndex]);
-  scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80),
+  
+   scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80),
                          new PVector(width/2 - 100, 20),
                          "tabla_resultados");
+
+  tm = new Theremin(this, new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
+  game = new Game(this, tm, scoreTableView, catalogue[musicIndex]);
+ 
   
   gop = new GameOverPanel(this);
 }
