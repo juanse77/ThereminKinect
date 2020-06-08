@@ -12,7 +12,12 @@ class Theremin {
   private float currentVolume = 0;
   private SinOsc sound;
   
-  public Theremin(Point toneBottom, Point toneUp, Point volumeLeft, Point volumeRight, SinOsc sound){
+  private PApplet p;
+  private ThereminModel tm;
+  
+  public Theremin(PApplet p, Point toneBottom, Point toneUp, Point volumeLeft, Point volumeRight, SinOsc sound){
+    
+    this.p = p;
     
     this.toneBottom = toneBottom;
     this.toneUp = toneUp;
@@ -21,6 +26,8 @@ class Theremin {
     this.volumeRight =volumeRight;
     
     this.sound = sound;
+    
+    this.tm = new ThereminModel(8);
     
     sound.set(0, 1.e-4, 0, 0);
     sound.play();
@@ -34,6 +41,15 @@ class Theremin {
 
     stroke(255, 0, 0);
     line(volumeLeft.x, volumeLeft.y, volumeRight.x, volumeRight.y);
+    
+    // theremin model
+    ambientLight(255, 255, 255);
+    directionalLight(200, 200, 200,
+                          -1, 1, -1);
+                     
+    tm.draw(50+(p.width/2), 200+(p.height/2));
+    noLights();
+    
   }
   
   private float detectFrec(Point rightHand){

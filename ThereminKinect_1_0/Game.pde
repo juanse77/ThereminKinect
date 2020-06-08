@@ -8,15 +8,16 @@ class Game implements IMusic{
   private String musicFileName;
   private GameScore gs;
   private String name = "";
+  private int player = 0;
     
-  public Game(PApplet applet, Theremin tm, String musicFileName){
+  public Game(PApplet applet, Theremin tm, ScoreTable st, String musicFileName){
     this.applet = applet;
     this.tm = tm;
     
     this.mode = Mode.IDLE;
     this.musicFileName = musicFileName;
     
-    this.gs = new GameScore(tm);
+    this.gs = new GameScore(applet, tm, st);
   }
   
   public void runAutomaticMode(){
@@ -28,7 +29,8 @@ class Game implements IMusic{
     music.start_music(mode);
   }
   
-  public void runGameWithHelpMode(String name){
+  public void runGameWithHelpMode(int player, String name){
+    this.player = player;
     this.name = name;
     this.mode = Mode.GAME_WITH_HELP;
     
@@ -38,7 +40,8 @@ class Game implements IMusic{
     music.start_music(mode);
   }
   
-  public void runGameWithoutHelpMode(String name){
+  public void runGameWithoutHelpMode(int player, String name){
+    this.player = player;
     this.name = name;
     this.mode = Mode.GAME_WITHOUT_HELP;
     
@@ -53,15 +56,22 @@ class Game implements IMusic{
     gs.startMeasuring();
   }
   
-  public void drawMarks(){
+  public boolean drawMarks() {
+    
+    boolean end = false;
+    
     if(music.isRunning()){
       tm.drawLineMarks(music.getCurrentNote(), music.getCurrentVolume());
     }else{
       if(mode == Mode.GAME_WITH_HELP || mode == Mode.GAME_WITHOUT_HELP){
-        gs.addScoreTable(this.name);
+        gs.addScoreTable(this.player, this.name);
       }
+      
+      end = true;
+      
       this.mode = Mode.IDLE;
     }
+    return end;
   }
   
   public void start_music(int mode){

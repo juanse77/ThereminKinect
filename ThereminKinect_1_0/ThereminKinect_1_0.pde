@@ -29,9 +29,19 @@ int musicIndex = 0;
 
 String strMode; 
 
+ControlP5 cp5;
+
+ScoreTable scoreTableView;
+
+float timeToScore = 0.0;
+boolean endGame = false;
+
+GameOverPanel gop;
+ 
 void setup()
 {
-  size(640, 480);
+  cp5 = new ControlP5(this);
+  size(640, 480, P3D);
   frameRate(30);
 
   background(0);
@@ -41,8 +51,6 @@ void setup()
 
   rightHand = new Point(-30, -30);
   leftHand = new Point(-30, -30);
-
-  leapMotion = new LeapMotion(this);
 
 deviceIterator: 
   for (Device dev : Device.values()) {
@@ -72,6 +80,11 @@ deviceIterator:
 
   tm = new Theremin(new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
   game = new Game(this, tm, catalogue[musicIndex]);
+  scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80),
+                         new PVector(width/2 - 100, 20),
+                         "tabla_resultados");
+  
+  gop = new GameOverPanel(this);
 }
 
 void draw()
@@ -117,10 +130,11 @@ void draw()
     case Mode.GAME_WITH_HELP:
       strMode = "Game with help";
       deviceDetection();
-
-      game.drawMarks();
+      endGame = game.drawMarks();
       game.addPartiaScore();
-
+      
+      if(endGame) timeToScore = millis();
+  
       score = String.valueOf(game.getScore());
 
       tm.makeSound(leftHand, rightHand);
@@ -131,9 +145,10 @@ void draw()
       strMode = "Game without help";
       deviceDetection();
 
-      game.drawMarks();
+      endGame = game.drawMarks();
       game.addPartiaScore();
 
+      if(endGame) timeToScore = millis();
       score = String.valueOf(game.getScore());
 
       tm.makeSound(leftHand, rightHand);
@@ -141,20 +156,26 @@ void draw()
       break;
     }
 
-    textSize(20);
-    fill(0, 102, 153);
-    text(strMode, 10, 30);
+      textSize(20);
+  fill(0, 102, 153);
+  text(strMode, 10, 30);
+  
+  fill(255, 255, 255);
+  String musicName = catalogue[musicIndex].replace('_', ' ');
+  String s1 = musicName.substring(0, 1).toUpperCase();
+  musicName = s1 + musicName.substring(1);
+  
+  text(musicName, 10, 55);
+  
+  text("Score: " + score, width/2, 30);
+  
+  if(endGame && (millis() - timeToScore) < 4000.0) {
+    gop.show(kinect.GetImage(), game.getScore());
+  } else if(endGame) {
+    background(0);
+    endGame = false;
+  }
 
-    fill(255, 255, 255);
-    String musicName = catalogue[musicIndex].replace('_', ' ');
-    String s1 = musicName.substring(0, 1).toUpperCase();
-    musicName = s1 + musicName.substring(1);
-
-    text(musicName, 10, 55);
-
-    text("Score: " + score, width/2, 30);
-
-    //ficherogif.addFrame();
   } else {
     textSize(20);
     fill(255, 0, 0);
@@ -180,7 +201,7 @@ void keyPressed() {
     }
 
     numPlayer++;
-    game.runGameWithHelpMode("Player" + numPlayer);
+    game.runGameWithHelpMode(numPlayer, "Player " + numPlayer);
   }
 
   if (key == 'o' || key == 'O') {
@@ -190,7 +211,7 @@ void keyPressed() {
     }
 
     numPlayer++;
-    game.runGameWithoutHelpMode("Player" + numPlayer);
+    game.runGameWithoutHelpMode(numPlayer, "Player " + numPlayer);
   }
 
 
@@ -218,10 +239,23 @@ void keyPressed() {
       if (musicIndex > catalogue.length -1) {
         musicIndex = 0;
       }
-
       game.setMusicFileName(catalogue[musicIndex]);
     }
+  }  
+  
+  if(key == 't' || key == 'T') {
+    scoreTableView.toggleView();
   }
+  
+  if(key == 'q' || key == 'Q') {
+    if(game.isRunning()){
+      game.stop_music();
+    }
+    
+    exit();
+    System.exit(0);
+  }
+  
 }
 
 void exit() {
@@ -234,6 +268,7 @@ void exit() {
     ScoreRegistry sr = scoreTable.get(i);
 
     reg.setString("name", sr.getName());
+    reg.setInt("player", sr.getPlayer());
     reg.setFloat("score", sr.getScore());
 
     values.setJSONObject(i, reg);

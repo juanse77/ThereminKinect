@@ -1,10 +1,17 @@
 public class ScoreRegistry implements Comparable<ScoreRegistry>{
+    
+    private final int player;
     private final String name;
     private final float score;
     
-    public ScoreRegistry(String name, float score){
+    public ScoreRegistry(int player, String name, float score){
+      this.player = player;
       this.name = name;
       this.score = score;
+    }
+    
+    public int getPlayer() {
+      return player;
     }
     
     public String getName() {
