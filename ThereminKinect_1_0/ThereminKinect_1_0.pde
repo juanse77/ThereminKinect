@@ -37,7 +37,7 @@ float timeToScore = 0.0;
 boolean endGame = false;
 
 GameOverPanel gop;
- 
+
 void setup()
 {
   cp5 = new ControlP5(this);
@@ -77,15 +77,15 @@ deviceIterator:
       currentDevice = Device.NONE;
     }
   }
-  
-   scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80),
-                         new PVector(width/2 - 100, 20),
-                         "tabla_resultados");
+
+  scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80), 
+    new PVector(width/2 - 100, 20), 
+    "tabla_resultados");
 
   tm = new Theremin(this, new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
   game = new Game(this, tm, scoreTableView, catalogue[musicIndex]);
- 
-  
+
+
   gop = new GameOverPanel(this);
 }
 
@@ -123,7 +123,7 @@ void draw()
 
     case Mode.FREE:
       strMode = "Free";
-      
+
       deviceDetection();
       tm.makeSound(leftHand, rightHand);
 
@@ -134,9 +134,9 @@ void draw()
       deviceDetection();
       endGame = game.drawMarks();
       game.addPartiaScore();
-      
-      if(endGame) timeToScore = millis();
-  
+
+      if (endGame) timeToScore = millis();
+
       score = String.valueOf(game.getScore());
 
       tm.makeSound(leftHand, rightHand);
@@ -150,7 +150,7 @@ void draw()
       endGame = game.drawMarks();
       game.addPartiaScore();
 
-      if(endGame) timeToScore = millis();
+      if (endGame) timeToScore = millis();
       score = String.valueOf(game.getScore());
 
       tm.makeSound(leftHand, rightHand);
@@ -158,26 +158,34 @@ void draw()
       break;
     }
 
-      textSize(20);
-  fill(0, 102, 153);
-  text(strMode, 10, 30);
-  
-  fill(255, 255, 255);
-  String musicName = catalogue[musicIndex].replace('_', ' ');
-  String s1 = musicName.substring(0, 1).toUpperCase();
-  musicName = s1 + musicName.substring(1);
-  
-  text(musicName, 10, 55);
-  
-  text("Score: " + score, width/2, 30);
-  
-  if(endGame && (millis() - timeToScore) < 4000.0) {
-    gop.show(kinect.GetImage(), game.getScore());
-  } else if(endGame) {
-    background(0);
-    endGame = false;
-  }
+    textSize(20);
+    fill(0, 102, 153);
+    text(strMode, 10, 30);
 
+    fill(255, 255, 255);
+    String musicName = catalogue[musicIndex].replace('_', ' ');
+    String s1 = musicName.substring(0, 1).toUpperCase();
+    musicName = s1 + musicName.substring(1);
+
+    text(musicName, 10, 55);
+
+    text("Score: " + score, width/2, 30);
+
+    if (endGame && (millis() - timeToScore) < 4000.0) {
+      switch(currentDevice) {
+      case KINECT:
+        gop.show(kinect.GetImage(), game.getScore());
+        break;
+      case LEAP_MOTION:
+        gop.show(new PImage(), game.getScore());
+        break;
+      default: 
+        break;
+      }
+    } else if (endGame) {
+      background(0);
+      endGame = false;
+    }
   } else {
     textSize(20);
     fill(255, 0, 0);
@@ -244,20 +252,19 @@ void keyPressed() {
       game.setMusicFileName(catalogue[musicIndex]);
     }
   }  
-  
-  if(key == 't' || key == 'T') {
+
+  if (key == 't' || key == 'T') {
     scoreTableView.toggleView();
   }
-  
-  if(key == 'q' || key == 'Q') {
-    if(game.isRunning()){
+
+  if (key == 'q' || key == 'Q') {
+    if (game.isRunning()) {
       game.stop_music();
     }
-    
+
     exit();
     System.exit(0);
   }
-  
 }
 
 void exit() {
