@@ -92,7 +92,7 @@ class ScoreTable {
   ScoreTable(ControlP5 cp5, PVector dim, PVector pos, String name, ArrayList<ScoreRegistry> init, ArrayList<PImage> avatares) {
     assert avatares.size() == init.size(): "Lista avatares y lista init son de distinto tamaño";
     
-    scoreTable = new SliderList(cp5, name, int(dim.x), int(dim.y), int(dim.z), color(176, 202, 135), color(128, 152, 72));
+    scoreTable = new SliderList(cp5, name, int(dim.x), int(dim.y), int(dim.z), color(176, 202, 135), color(128, 152, 72), "Play a game\n to see your score record");
     scoreTable.setPosition(pos.array());
     for(int i = 0; i < init.size(); i++) {
       scoreTable.addItem(new ScoreItem(init.get(i).getName(),
@@ -104,12 +104,16 @@ class ScoreTable {
   
   ScoreTable(ControlP5 cp5, PVector dim, PVector pos, String name) {
     scoreTable = new SliderList(cp5, name, int(dim.x), int(dim.y), int(dim.z), color(176, 202, 135),
-                                                                               color(128, 152, 72));
+                                                                               color(128, 152, 72), "Play a game\n to see your score record");
     scoreTable.setPosition(pos.array());
   }
   
   void toggleView() {
     scoreTable.toggleSliderView();
+  }
+  
+  void showView(boolean show) {
+    scoreTable.showSlider(show);
   }
   
   void addItem(ScoreRegistry sr, PImage avatar) {
@@ -132,4 +136,28 @@ class ScoreTable {
     scoreTable.clearList();
   }
   
+}
+
+boolean toggleScoreTableFlag = false;
+
+class ScoreTableButton {
+  
+  private final Toggle toggle;
+  private final ScoreTable stv;
+  
+  public ScoreTableButton(ControlP5 cp5, ScoreTable stv, PVector loc, PVector dim) {
+    toggle = cp5.addToggle("toggleScoreTableFlag")
+                .setPosition(loc.x, loc.y)
+                .setSize(int(dim.x), int(dim.y))
+                .setMode(ControlP5.SWITCH);
+    this.stv = stv;
+    Label l = toggle.getCaptionLabel();
+    l.getStyle().marginTop = -int(dim.y); //move upwards (relative to button size)
+    l.getStyle().marginLeft = int(dim.x); //move to the right
+  }
+  
+  void update() {
+    this.stv.showView(toggleScoreTableFlag);
+    toggle.setLabel(toggleScoreTableFlag ? "Hide score table": "Show score table");
+  }
 }

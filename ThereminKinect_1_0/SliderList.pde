@@ -1,7 +1,5 @@
 
-import controlP5.ControlP5;
-import controlP5.Controller;
-import controlP5.ControllerView;
+
 
 import java.util.Collections;
 
@@ -24,7 +22,9 @@ class SliderList extends Controller<SliderList> {
   
   private boolean toggleSliderList;
   
-  public SliderList(ControlP5 cp5, String name, int w, int h, int item_height, color bg, color scrollbar_color) {
+  private final String empty_message;
+  
+  public SliderList(ControlP5 cp5, String name, int w, int h, int item_height, color bg, color scrollbar_color, String empty_message) {
     super(cp5, name, 0, 0, w, h);
     cp5.register(this);
     menu = createGraphics(getWidth(), getHeight());
@@ -37,6 +37,8 @@ class SliderList extends Controller<SliderList> {
     items = new ArrayList<Item>();
     
     toggleSliderList = false;
+    
+    this.empty_message = empty_message;
     
     setView(new ControllerView<SliderList>() {
 
@@ -55,6 +57,10 @@ class SliderList extends Controller<SliderList> {
     toggleSliderList = !toggleSliderList;
   }
   
+  public void showSlider(boolean show) {
+    toggleSliderList = show;
+  }
+  
   void updateList() {
     menu.beginDraw();
     menu.pushMatrix();
@@ -63,15 +69,25 @@ class SliderList extends Controller<SliderList> {
     menu.fill(246, 249, 241);
     menu.rect(0,0,menu.width, menu.height, 10);
     
-    for(int i = 0; i < items.size(); i++) {
-      //menu.text(i + "", 0, (i + npos)*15);
-      menu.stroke(0, 0, 0, 0);
-      menu.fill(bg);
-      menu.rect(0, i + scrollpos, getWidth(), item_height, 10);
+    
+    if(items.isEmpty()) {
+      menu.textAlign(CENTER);
+      menu.textSize(12);
+      menu.fill(0,0,0);
+      menu.text(empty_message, menu.width/2, menu.height/2);
+    } else {
+    
+      for(int i = 0; i < items.size(); i++) {
+        //menu.text(i + "", 0, (i + npos)*15);
+        menu.stroke(0, 0, 0, 0);
+        menu.fill(bg);
+        menu.rect(0, i + scrollpos, getWidth(), item_height, 10);
+        
+        items.get(i).draw(menu, 0, i + scrollpos);
+        
+        menu.translate(0, item_height);
+      }
       
-      items.get(i).draw(menu, 0, i + scrollpos);
-      
-      menu.translate(0, item_height);
     }
     menu.popMatrix();
     

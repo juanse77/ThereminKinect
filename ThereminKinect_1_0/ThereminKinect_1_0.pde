@@ -4,6 +4,8 @@ import processing.sound.*;
 import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
 
+import controlP5.*;
+
 //import gifAnimation.*;
 //GifMaker ficherogif;
 
@@ -32,11 +34,13 @@ String strMode;
 ControlP5 cp5;
 
 ScoreTable scoreTableView;
+ScoreTableButton stb;
 
 float timeToScore = 0.0;
 boolean endGame = false;
 
 GameOverPanel gop;
+
 
 void setup()
 {
@@ -87,6 +91,7 @@ deviceIterator:
 
 
   gop = new GameOverPanel(this);
+  stb = new ScoreTableButton(cp5, scoreTableView, new PVector(20, height-30), new PVector(20,20));
 }
 
 void draw()
@@ -191,6 +196,8 @@ void draw()
     fill(255, 0, 0);
     text("Not compatible device connected", width/4, height/2);
   }
+  
+  stb.update();
 }
 
 void keyPressed() {
@@ -256,18 +263,14 @@ void keyPressed() {
   if (key == 't' || key == 'T') {
     scoreTableView.toggleView();
   }
-
-  if (key == 'q' || key == 'Q') {
-    if (game.isRunning()) {
-      game.stop_music();
-    }
-
-    exit();
-    System.exit(0);
-  }
+  
 }
 
 void exit() {
+  if (game.isRunning()) {
+    game.stop_music();
+  }
+  
   JSONArray values = new JSONArray();
   ArrayList<ScoreRegistry> scoreTable = game.getScoreTable();
 
@@ -284,7 +287,10 @@ void exit() {
   }
 
   saveJSONArray(values, "data/scores.json");
+  
+  super.exit();
 }
+
 
 // Devices
 

@@ -184,7 +184,6 @@ void create_number(float number, int nDigits, int nDecimals) {
 
     digito(character);
   }
-
 }
 
 void create_number(float number, int nDecimals) {
@@ -205,9 +204,9 @@ void main( void )
 	if (REPEAT_SIGN)
 	  uv = -14.0 + mod(1.8*(uv-1.0),ch_space*vec2(16.,6.5));     //  set zoom size //-14.0 + mod(1.8*(uv-1.0),ch_space*vec2(16.,6.5));
 
-	ch_pos = ch_start + vec2(sin(time),0.0);  // set start position
+	ch_pos = ch_start + vec2(sin(time), 3.0);  // set start position
 
-  _ _ G A M E _ O V E R nl3
+  _ _ G A M E _ O V E R nl1
 	S C O R E _ create_number(score, 2);
 
 	vec3 color = mix(ch_color*(1.4), bg_color, 1.0- (0.03 / d));  // shading
