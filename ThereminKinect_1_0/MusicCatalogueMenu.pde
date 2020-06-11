@@ -26,6 +26,7 @@ class MusicCatalogueMenu {
   }
   
   void enable() {
+    sl.clear();
     sl.addItems(cat);
     sl.close();
   }

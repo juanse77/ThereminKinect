@@ -31,7 +31,6 @@ void controlEvent(CallbackEvent event) {
       } else {
         game.setIdle();
       }
-      mcm.disable();
       mcm.enable();
       break;
     case "/AUTOMATIC":
@@ -71,55 +70,3 @@ void controlEvent(CallbackEvent event) {
     }
   }
 }
-
-/*
-void modes_menu(int n) {
-  switch(n) {
-    case 0: // IDLE
-      if (game.isRunning()) {
-        game.stop_music();
-      } else {
-        game.setIdle();
-      }
-      mcm.disable();
-      mcm.enable();
-      break;
-    case 1: // Automatic
-      if (game.isRunning()) {
-        game.stop_music();
-      }
-  
-      game.runAutomaticMode();
-      mcm.disable();
-      break;
-    case 2: // Free
-      if (game.isRunning()) {
-        game.stop_music();
-      }
-  
-      game.runFree();
-      mcm.disable();
-      break;
-    case 3: // Game with help
-      if (game.isRunning()) {
-        game.stop_music();
-      }
-  
-      numPlayer++;
-      game.runGameWithHelpMode(numPlayer, "Player " + numPlayer);
-      mcm.disable();
-      break;
-    case 4: // Game without help
-      if (game.isRunning()) {
-        game.stop_music();
-      }
-  
-      numPlayer++;
-      game.runGameWithoutHelpMode(numPlayer, "Player " + numPlayer);
-      mcm.disable();
-      break;
-    default:
-      
-      break;
-  }
-*/
