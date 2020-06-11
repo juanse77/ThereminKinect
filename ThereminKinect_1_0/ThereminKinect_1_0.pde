@@ -42,6 +42,7 @@ boolean endGame = false;
 GameOverPanel gop;
 
 ModesMenu mm;
+MusicCatalogueMenu mcm;
 
 void setup()
 {
@@ -96,6 +97,8 @@ deviceIterator:
   stb = new ScoreTableButton(cp5, scoreTableView, new PVector(20, height-30), new PVector(20,20));
   
   mm = new ModesMenu(cp5);
+  
+  mcm = new MusicCatalogueMenu(cp5);
 }
 
 void draw()
@@ -176,7 +179,7 @@ void draw()
     String s1 = musicName.substring(0, 1).toUpperCase();
     musicName = s1 + musicName.substring(1);
 
-    text(musicName, 10, 75);
+    //text(musicName, 10, 75);
 
     text("Score: " + score, width/2, 50);
 
@@ -184,9 +187,11 @@ void draw()
       switch(currentDevice) {
       case KINECT:
         gop.show(kinect.GetImage(), game.getScore());
+        mcm.enable();
         break;
       case LEAP_MOTION:
         gop.show(new PImage(), game.getScore());
+        mcm.enable();
         break;
       default: 
         break;

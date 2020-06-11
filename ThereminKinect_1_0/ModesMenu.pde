@@ -17,6 +17,8 @@ void modes_menu(int n) {
       } else {
         game.setIdle();
       }
+      mcm.disable();
+      mcm.enable();
       break;
     case 1: // Automatic
       if (game.isRunning()) {
@@ -24,6 +26,7 @@ void modes_menu(int n) {
       }
   
       game.runAutomaticMode();
+      mcm.disable();
       break;
     case 2: // Free
       if (game.isRunning()) {
@@ -31,6 +34,7 @@ void modes_menu(int n) {
       }
   
       game.runFree();
+      mcm.disable();
       break;
     case 3: // Game with help
       if (game.isRunning()) {
@@ -39,6 +43,7 @@ void modes_menu(int n) {
   
       numPlayer++;
       game.runGameWithHelpMode(numPlayer, "Player " + numPlayer);
+      mcm.disable();
       break;
     case 4: // Game without help
       if (game.isRunning()) {
@@ -47,6 +52,7 @@ void modes_menu(int n) {
   
       numPlayer++;
       game.runGameWithoutHelpMode(numPlayer, "Player " + numPlayer);
+      mcm.disable();
       break;
     default:
       
