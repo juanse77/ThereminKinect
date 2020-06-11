@@ -116,10 +116,9 @@ void draw()
     tm.drawTheremin();
 
     String score = "0.0";
-    println(game.getMode());
     switch(game.getMode()) {
 
-    case Mode.IDLE:
+    case IDLE:
       strMode = "Idle";
       tm.muteTheremin();
 
@@ -127,13 +126,13 @@ void draw()
 
       break;
 
-    case Mode.AUTOMATIC:
+    case AUTOMATIC:
       strMode = "Automatic";
       game.drawMarks();    
 
       break;
 
-    case Mode.FREE:
+    case FREE:
       strMode = "Free";
 
       deviceDetection();
@@ -141,7 +140,7 @@ void draw()
 
       break;
 
-    case Mode.GAME_WITH_HELP:
+    case GAME_WITH_HELP:
       strMode = "Game with help";
       deviceDetection();
       endGame = game.drawMarks();
@@ -155,7 +154,7 @@ void draw()
 
       break;
 
-    case Mode.GAME_WITHOUT_HELP:
+    case GAME_WITHOUT_HELP:
       strMode = "Game without help";
       deviceDetection();
 

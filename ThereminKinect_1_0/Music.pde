@@ -12,7 +12,7 @@ class Music implements IMusic{
   
   private boolean run_music = false;
   
-  public Music(PApplet applet, float bpm, int mode, String musicFileName){
+  public Music(PApplet applet, float bpm, Mode mode, String musicFileName){
     
     this.i_cello = new Instrument(applet, SoundCipher.CELLO, bpm, false, mode);
     this.i_voice = new Instrument(applet, SoundCipher.VOICE, bpm, true, mode);
@@ -45,7 +45,7 @@ class Music implements IMusic{
     
   }
   
-  public void start_music(int mode) {
+  public void start_music(Mode mode) {
     run_music = true;
     
     thread("executeBase");

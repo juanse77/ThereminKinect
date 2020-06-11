@@ -1,6 +1,6 @@
 public interface IMusic{
   
-  void start_music(int mode);
+  void start_music(Mode mode);
   void stop_music();
   
   void executeBase();

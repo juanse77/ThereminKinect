@@ -4,7 +4,7 @@ class Game implements IMusic{
   private final PApplet applet;
   
   private Music music;
-  private int mode;
+  private Mode mode;
   private String musicFileName;
   private GameScore gs;
   private String name = "";
@@ -74,7 +74,7 @@ class Game implements IMusic{
     return end;
   }
   
-  public void start_music(int mode){
+  public void start_music(Mode mode){
     this.mode = mode;
     music.start_music(mode);
   }
@@ -108,7 +108,7 @@ class Game implements IMusic{
     return music.getCurrentNote();
   }
   
-  public int getMode(){
+  public Mode getMode(){
     return this.mode;
   }
   

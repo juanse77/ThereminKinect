@@ -7,14 +7,14 @@ class Instrument
   private float currentNote;
   private float currentVolume;
   private boolean melody;
-  private int mode;
+  private Mode mode;
   
   /**
    *
    * bmp : beats per minute 1/bpm = crotchet 
    *
    */
-  Instrument(PApplet applet, float instrument, float max_bpm, boolean melody, int mode) {
+  Instrument(PApplet applet, float instrument, float max_bpm, boolean melody, Mode mode) {
     
     this.sc = new SoundCipher(applet);
     this.sc.instrument = instrument;

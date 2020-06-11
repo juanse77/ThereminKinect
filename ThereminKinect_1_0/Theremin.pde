@@ -47,7 +47,7 @@ class Theremin {
     directionalLight(200, 200, 200,
                           -1, 1, -1);
                      
-    tm.draw(50+(p.width/2), 200+(p.height/2));
+    tm.draw(50+(p.width/2), 180+(p.height/2));
     noLights();
     
   }
