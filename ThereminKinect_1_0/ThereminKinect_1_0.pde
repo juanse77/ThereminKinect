@@ -41,6 +41,7 @@ boolean endGame = false;
 
 GameOverPanel gop;
 
+ModesMenu mm;
 
 void setup()
 {
@@ -80,6 +81,7 @@ deviceIterator:
     default:
       currentDevice = Device.NONE;
     }
+    
   }
 
   scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80), 
@@ -92,6 +94,8 @@ deviceIterator:
 
   gop = new GameOverPanel(this);
   stb = new ScoreTableButton(cp5, scoreTableView, new PVector(20, height-30), new PVector(20,20));
+  
+  mm = new ModesMenu(cp5);
 }
 
 void draw()
@@ -109,7 +113,7 @@ void draw()
     tm.drawTheremin();
 
     String score = "0.0";
-
+    println(game.getMode());
     switch(game.getMode()) {
 
     case Mode.IDLE:
@@ -165,16 +169,16 @@ void draw()
 
     textSize(20);
     fill(0, 102, 153);
-    text(strMode, 10, 30);
+    text(strMode, 10, 50);
 
     fill(255, 255, 255);
     String musicName = catalogue[musicIndex].replace('_', ' ');
     String s1 = musicName.substring(0, 1).toUpperCase();
     musicName = s1 + musicName.substring(1);
 
-    text(musicName, 10, 55);
+    text(musicName, 10, 75);
 
-    text("Score: " + score, width/2, 30);
+    text("Score: " + score, width/2, 50);
 
     if (endGame && (millis() - timeToScore) < 4000.0) {
       switch(currentDevice) {
@@ -245,7 +249,10 @@ void keyPressed() {
 
     if (game.isRunning()) {
       game.stop_music();
+    } else {
+      game.setIdle();
     }
+    
   }
 
   if (key == 'c' || key == 'C') {

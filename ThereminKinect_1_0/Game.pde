@@ -83,6 +83,10 @@ class Game implements IMusic{
     music.stop_music();
     this.mode = Mode.IDLE;
   }
+  
+  public void setIdle() {
+    this.mode = Mode.IDLE;
+  }
 
   public void executeMelody(){
     music.executeMelody();
