@@ -20,8 +20,6 @@ class SliderList extends Controller<SliderList> {
   private ArrayList<Item> items;
   private color bg, scrollbar_color;
   
-  private boolean toggleSliderList;
-  
   private final String empty_message;
   
   public SliderList(ControlP5 cp5, String name, int w, int h, int item_height, color bg, color scrollbar_color, String empty_message) {
@@ -36,14 +34,12 @@ class SliderList extends Controller<SliderList> {
     
     items = new ArrayList<Item>();
     
-    toggleSliderList = false;
-    
     this.empty_message = empty_message;
     
     setView(new ControllerView<SliderList>() {
 
       public void display(PGraphics pg, SliderList t ) {
-        if(toggleSliderList) {
+        if(toggleScoreTableFlag) {
           updateList();
           pg.image(menu, 0, 0);
         } else {
@@ -54,13 +50,9 @@ class SliderList extends Controller<SliderList> {
   }
   
   public void toggleSliderView() {
-    toggleSliderList = !toggleSliderList;
+    toggleScoreTableFlag = !toggleScoreTableFlag;
   }
-  
-  public void showSlider(boolean show) {
-    toggleSliderList = show;
-  }
-  
+    
   void updateList() {
     menu.beginDraw();
     menu.pushMatrix();

@@ -10,6 +10,7 @@ class MusicCatalogueMenu {
     for(int i = 0; i < catalogue.length; i++) {
       cat[i] = catalogue[i].replace("_", " ");
     }
+    
     this.sl = cp5.addScrollableList("chooseSong")
        .setLabel("Choose song")
        .setPosition(10, 60)
@@ -30,9 +31,14 @@ class MusicCatalogueMenu {
     sl.addItems(cat);
     sl.close();
   }
+
+  void chooseSong(int musicIndex) {
+    game.setMusicFileName(catalogue[musicIndex]);
+    this.sl.setValue(musicIndex);
+  }
+  
 }
 
-void chooseSong(int n) {
-  musicIndex = n;
-  game.setMusicFileName(catalogue[musicIndex]);
+void chooseSong(int musicIndex) {
+    game.setMusicFileName(catalogue[musicIndex]);
 }

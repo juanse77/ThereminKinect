@@ -112,10 +112,6 @@ class ScoreTable {
     scoreTable.toggleSliderView();
   }
   
-  void showView(boolean show) {
-    scoreTable.showSlider(show);
-  }
-  
   void addItem(ScoreRegistry sr, PImage avatar) {
     scoreTable.addItem(new ScoreItem(sr.getName(),
                                      sr.getScore(),
@@ -143,21 +139,20 @@ boolean toggleScoreTableFlag = false;
 class ScoreTableButton {
   
   private final Toggle toggle;
-  private final ScoreTable stv;
   
-  public ScoreTableButton(ControlP5 cp5, ScoreTable stv, PVector loc, PVector dim) {
+  public ScoreTableButton(ControlP5 cp5, PVector loc, PVector dim) {
     toggle = cp5.addToggle("toggleScoreTableFlag")
                 .setPosition(loc.x, loc.y)
                 .setSize(int(dim.x), int(dim.y))
                 .setMode(ControlP5.SWITCH);
-    this.stv = stv;
+                
     Label l = toggle.getCaptionLabel();
     l.getStyle().marginTop = -int(dim.y); //move upwards (relative to button size)
     l.getStyle().marginLeft = int(dim.x); //move to the right
   }
   
   void update() {
-    this.stv.showView(toggleScoreTableFlag);
-    toggle.setLabel(toggleScoreTableFlag ? "Hide score table": "Show score table");
+    toggle.setLabel(toggleScoreTableFlag ? " Hide score table": " Show score table");
+    toggle.setState(toggleScoreTableFlag);
   }
 }
