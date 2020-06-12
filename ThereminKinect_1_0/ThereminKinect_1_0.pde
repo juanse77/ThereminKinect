@@ -85,16 +85,16 @@ deviceIterator:
     
   }
 
-  scoreTableView = new ScoreTable(cp5, new PVector(200, 400, 80), 
-    new PVector(width/2 - 100, 20), 
+  scoreTableView = new ScoreTable(cp5, new PVector(200, 300, 80), 
+    new PVector(width/2 - 100, 60), 
     "tabla_resultados");
 
-  tm = new Theremin(this, new Point(600, 360), new Point(600, 60), new Point(60, 360), new Point(160, 360), new SinOsc(this));
+  tm = new Theremin(this, new Point(585, 410), new Point(585, 60), new Point(60, 410), new Point(160, 410), new SinOsc(this));
   game = new Game(this, tm, scoreTableView, catalogue[musicIndex]);
 
 
   gop = new GameOverPanel(this);
-  stb = new ScoreTableButton(cp5, scoreTableView, new PVector(20, height-30), new PVector(20,20));
+  stb = new ScoreTableButton(cp5, new PVector(20, height-30), new PVector(20,20));
   
   mm = new ModesMenu(cp5);
   
@@ -217,6 +217,7 @@ void keyPressed() {
     }
 
     game.runAutomaticMode();
+    mcm.disable();
   }
 
   if (key == 'h' || key == 'H') {
@@ -227,6 +228,7 @@ void keyPressed() {
 
     numPlayer++;
     game.runGameWithHelpMode(numPlayer, "Player " + numPlayer);
+    mcm.disable();
   }
 
   if (key == 'o' || key == 'O') {
@@ -237,6 +239,7 @@ void keyPressed() {
 
     numPlayer++;
     game.runGameWithoutHelpMode(numPlayer, "Player " + numPlayer);
+    mcm.disable();
   }
 
 
@@ -247,6 +250,7 @@ void keyPressed() {
     }
 
     game.runFree();
+    mcm.disable();
   }
 
   if (key == 's' || key == 'S') {
@@ -256,6 +260,7 @@ void keyPressed() {
     } else {
       game.setIdle();
     }
+    mcm.enable();
     
   }
 
@@ -267,7 +272,7 @@ void keyPressed() {
       if (musicIndex > catalogue.length -1) {
         musicIndex = 0;
       }
-      game.setMusicFileName(catalogue[musicIndex]);
+      mcm.chooseSong(musicIndex);
     }
   }  
 
