@@ -82,7 +82,6 @@ deviceIterator:
     default:
       currentDevice = Device.NONE;
     }
-    
   }
 
   scoreTableView = new ScoreTable(cp5, new PVector(200, 300, 80), 
@@ -94,10 +93,10 @@ deviceIterator:
 
 
   gop = new GameOverPanel(this);
-  stb = new ScoreTableButton(cp5, new PVector(20, height-30), new PVector(20,20));
-  
+  stb = new ScoreTableButton(cp5, new PVector(20, height-30), new PVector(20, 20));
+
   mm = new ModesMenu(cp5);
-  
+
   mcm = new MusicCatalogueMenu(cp5);
 }
 
@@ -205,9 +204,11 @@ void draw()
     fill(255, 0, 0);
     text("Not compatible device connected", width/4, height/2);
     cp5.setVisible(false);
-    game.stop_music();
+    if (game.isRunning()) {
+      game.stop_music();
+    }
   }
-  
+
   stb.update();
 }
 
@@ -264,7 +265,6 @@ void keyPressed() {
       game.setIdle();
     }
     mcm.enable();
-    
   }
 
   if (key == 'c' || key == 'C') {
@@ -282,14 +282,13 @@ void keyPressed() {
   if (key == 't' || key == 'T') {
     scoreTableView.toggleView();
   }
-  
 }
 
 void exit() {
   if (game.isRunning()) {
     game.stop_music();
   }
-  
+
   JSONArray values = new JSONArray();
   ArrayList<ScoreRegistry> scoreTable = game.getScoreTable();
 
@@ -306,7 +305,7 @@ void exit() {
   }
 
   saveJSONArray(values, "data/scores.json");
-  
+
   super.exit();
 }
 
