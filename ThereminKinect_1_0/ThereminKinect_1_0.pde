@@ -189,7 +189,7 @@ void draw()
         mcm.enable();
         break;
       case LEAP_MOTION:
-        gop.show(new PImage(), game.getScore());
+        gop.show(createImage(width, height, RGB), game.getScore());
         mcm.enable();
         break;
       default: 
