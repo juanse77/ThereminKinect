@@ -111,6 +111,7 @@ void draw()
   //Dibuja esqueletos
 
   if (isDeviceEnable()) {
+    cp5.setVisible(true);
     displayInScreen();
 
     tm.drawTheremin();
@@ -203,6 +204,8 @@ void draw()
     textSize(20);
     fill(255, 0, 0);
     text("Not compatible device connected", width/4, height/2);
+    cp5.setVisible(false);
+    game.stop_music();
   }
   
   stb.update();
