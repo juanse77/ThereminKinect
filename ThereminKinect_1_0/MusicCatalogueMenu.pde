@@ -13,7 +13,7 @@ class MusicCatalogueMenu {
     
     this.sl = cp5.addScrollableList("chooseSong")
        .setLabel("Choose song")
-       .setPosition(10, 60)
+       .setPosition(10, 40)
        .setBarHeight(20)
        .setItemHeight(20)
        .addItems(cat)

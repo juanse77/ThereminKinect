@@ -100,6 +100,22 @@ class SliderList extends Controller<SliderList> {
     scrollpos = new_scrollpos;
   }
   
+  void keyEvent(KeyEvent ev) {
+    
+    int signo = 0;
+    if(ev.getKeyCode() == UP) {
+      signo = -1;
+    } else if(ev.getKeyCode() == DOWN) {
+      signo = +1;
+    }
+    int new_scrollpos = scrollpos - 20*signo;
+    
+    if(new_scrollpos > 0) return;
+    if(abs(new_scrollpos) + getHeight() > item_height*items.size()) return;
+    
+    scrollpos = new_scrollpos;
+  }
+  
   void addItem(Item item) {
     items.add(item);
   }

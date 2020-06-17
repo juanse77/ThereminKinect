@@ -168,18 +168,21 @@ void draw()
 
       break;
     }
-
-    textSize(20);
+    
+    
+    /*
     fill(0, 102, 153);
     text(strMode, 10, 50);
-
+    */
+    /*
     fill(255, 255, 255);
     String musicName = catalogue[musicIndex].replace('_', ' ');
     String s1 = musicName.substring(0, 1).toUpperCase();
     musicName = s1 + musicName.substring(1);
-
+    */
     //text(musicName, 10, 75);
-
+    
+    textSize(20);
     text("Score: " + score, width/2, 50);
 
     if (endGame && (millis() - timeToScore) < 4000.0) {
@@ -213,7 +216,7 @@ void draw()
 }
 
 void keyPressed() {
-
+  
   if (key == 'a' || key == 'A') {
 
     if (game.isRunning()) {
@@ -222,6 +225,7 @@ void keyPressed() {
 
     game.runAutomaticMode();
     mcm.disable();
+    mm.selectMode(Mode.AUTOMATIC);
   }
 
   if (key == 'h' || key == 'H') {
@@ -233,6 +237,7 @@ void keyPressed() {
     numPlayer++;
     game.runGameWithHelpMode(numPlayer, "Player " + numPlayer);
     mcm.disable();
+    mm.selectMode(Mode.GAME_WITH_HELP);
   }
 
   if (key == 'o' || key == 'O') {
@@ -244,6 +249,7 @@ void keyPressed() {
     numPlayer++;
     game.runGameWithoutHelpMode(numPlayer, "Player " + numPlayer);
     mcm.disable();
+    mm.selectMode(Mode.GAME_WITHOUT_HELP);
   }
 
 
@@ -255,6 +261,7 @@ void keyPressed() {
 
     game.runFree();
     mcm.disable();
+    mm.selectMode(Mode.FREE);
   }
 
   if (key == 's' || key == 'S') {
@@ -265,6 +272,7 @@ void keyPressed() {
       game.setIdle();
     }
     mcm.enable();
+    mm.selectMode(Mode.IDLE);
   }
 
   if (key == 'c' || key == 'C') {
