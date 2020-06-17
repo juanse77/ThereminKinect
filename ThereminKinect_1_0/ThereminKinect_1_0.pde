@@ -280,7 +280,9 @@ void keyPressed() {
   }  
 
   if (key == 't' || key == 'T') {
-    scoreTableView.toggleView();
+    if (!game.isRunning()){
+      scoreTableView.toggleView();
+    }
   }
 }
 
