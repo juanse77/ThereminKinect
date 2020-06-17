@@ -505,7 +505,7 @@ void drawSkeleton(SkeletonData _s) {
 void DrawBone(SkeletonData _s, int _j1, int _j2) {
   noFill();
   strokeWeight(4);
-  stroke(255, 255, 0);
+  stroke(255, 255, 255, 128);
   //Comprueba validez del dato
   if (_s.skeletonPositionTrackingState[_j1] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED &&
     _s.skeletonPositionTrackingState[_j2] != Kinect.NUI_SKELETON_POSITION_NOT_TRACKED) {
