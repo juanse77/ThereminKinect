@@ -36,11 +36,13 @@ class Theremin {
   public void drawTheremin(){
     strokeWeight(10);
   
+    /*
     stroke(0, 255, 0);
     line(toneBottom.x, toneBottom.y, toneUp.x, toneUp.y);
 
     stroke(255, 0, 0);
     line(volumeLeft.x, volumeLeft.y, volumeRight.x, volumeRight.y);
+    */
     
     // theremin model
     ambientLight(255, 255, 255);
@@ -117,7 +119,7 @@ class Theremin {
     Point bottom = new Point(x, toneBottom.y - range);
     Point up = new Point(x, toneUp.y + range);
     
-    stroke(0, 255, 0, 128);
+    stroke(255, 255, 255, 128);
     strokeWeight(8);
     line(bottom.x, bottom.y, up.x, up.y);
 
@@ -127,7 +129,7 @@ class Theremin {
     Point left = new Point(volumeLeft.x + range, y);
     Point right = new Point(volumeRight.x - range, y);
     
-    stroke(255, 0, 0, 128);
+    stroke(255, 255, 255, 128);
     strokeWeight(8);
     line(left.x, left.y, right.x, right.y);
     

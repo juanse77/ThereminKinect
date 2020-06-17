@@ -54,6 +54,7 @@ class Game implements IMusic{
   public void runFree(){
     this.mode = Mode.FREE;
     gs.startMeasuring();
+    tm.muteTheremin();
   }
   
   public boolean drawMarks() {
