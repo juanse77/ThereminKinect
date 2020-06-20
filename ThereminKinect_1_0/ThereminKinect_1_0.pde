@@ -196,7 +196,7 @@ void draw()
         mcm.enable();
         break;
       case LEAP_MOTION:
-        gop.show(createImage(width, height, RGB), game.getScore());
+        gop.show(background, game.getScore());
         mcm.enable();
         break;
       default: 
