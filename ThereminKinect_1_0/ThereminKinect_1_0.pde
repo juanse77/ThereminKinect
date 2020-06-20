@@ -44,6 +44,8 @@ GameOverPanel gop;
 ModesMenu mm;
 MusicCatalogueMenu mcm;
 
+PImage background;
+
 void setup()
 {
   cp5 = new ControlP5(this);
@@ -51,6 +53,8 @@ void setup()
   frameRate(30);
 
   background(0);
+  background = loadImage("bg.jpg");
+  background.resize(width, height);
 
   //ficherogif = new GifMaker( this, "ThereminKinect.gif");
   //ficherogif.setRepeat(0);
@@ -343,7 +347,7 @@ void displayInScreen() {
     image(kinect.GetImage(), 0, 0);
     break;
   default:
-    break;
+    image(background, 0, 0);
   }
 }
 
