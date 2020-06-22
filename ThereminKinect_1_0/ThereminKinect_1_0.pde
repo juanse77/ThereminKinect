@@ -106,7 +106,7 @@ deviceIterator:
 
 void draw()
 {
-  background(0);
+  background(background);
   //Pinta las imágenes de entrada, profundidad y máscara
   //image(kinect.GetImage(), 320, 0, 320, 240);
   //image(kinect.GetDepth(), 320, 240, 320, 240);
@@ -127,6 +127,8 @@ void draw()
       tm.muteTheremin();
 
       score = String.valueOf(game.getScore());
+      
+      mm.selectMode(Mode.IDLE);
 
       break;
 
@@ -199,7 +201,9 @@ void draw()
         gop.show(background, game.getScore());
         mcm.enable();
         break;
-      default: 
+      default:
+        gop.show(background, game.getScore());
+        mcm.enable();
         break;
       }
     } else if (endGame) {
